@@ -1,9 +1,9 @@
 package com.example.mylogin;
 
-
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -14,73 +14,70 @@ import cn.bmob.v3.Bmob;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 
+/**
+ * Created by zqy on 17-10-17.
+ */
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText accountEdit;
     private EditText passwordEdit;
-    private Button signinButton;
+    private EditText repeatpasswordEdit;
     private Button signupButton;
 
 
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_signup);
 
         Bmob.initialize(this, "e01990f453876ec8667dbc94fb0ff9ef", "bmob");
-
         initialize();
 
-    }
-    // 初始化控件
+}
+
     private void initialize() {
-        accountEdit = (EditText) findViewById(R.id.account_edittext);
+        accountEdit = (EditText) findViewById(R.id.email_edittext);
         passwordEdit = (EditText) findViewById(R.id.password_edittext);
-        signinButton = (Button) findViewById(R.id.custom_signin_button);
+        repeatpasswordEdit = (EditText) findViewById(R.id.repeat_password_edittext);
         signupButton = (Button) findViewById(R.id.custom_signup_button);
 
         signupButton.setOnClickListener(this);
-        signinButton.setOnClickListener(this);
-
-//        signupButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                signup();
-//            }
-//        });
-//
-//        signinButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                signin();
-//            }
-//        });
 
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.custom_signin_button:
-
-                break;
             case R.id.custom_signup_button:
-                Intent intent = new Intent(this, SignupActivity.class);
-                startActivity(intent);
+                signup();
                 break;
+
         }
     }
 
-    public void signin() {
+    private void signup() {
         String account = accountEdit.getText().toString();
         String password = passwordEdit.getText().toString();
-        ModelUser modelUser = new ModelUser();
+        String repeatpassword = repeatpasswordEdit.getText().toString();
+
+        final ModelUser modelUser = new ModelUser();
         modelUser.setUsername(account);
         modelUser.setPassword(password);
+
+        modelUser.signUp(new SaveListener<ModelUser>() {
+            @Override
+            public void done(ModelUser modelUser, BmobException e) {
+                if (e == null) {
+                    Toast.makeText(SignupActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(SignupActivity.this, "注册失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        });
     }
 
-
-
 }
-
