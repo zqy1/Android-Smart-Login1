@@ -1,6 +1,7 @@
 package com.example.mylogin;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 
@@ -39,7 +41,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 }
 
     private void initialize() {
-        accountEdit = (EditText) findViewById(R.id.email_edittext);
+        accountEdit = (EditText) findViewById(R.id.account_edittext);
         passwordEdit = (EditText) findViewById(R.id.password_edittext);
         repeatpasswordEdit = (EditText) findViewById(R.id.repeat_password_edittext);
         signupButton = (Button) findViewById(R.id.custom_signup_button);
@@ -63,21 +65,39 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         String password = passwordEdit.getText().toString();
         String repeatpassword = repeatpasswordEdit.getText().toString();
 
-        final ModelUser modelUser = new ModelUser();
-        modelUser.setUsername(account);
-        modelUser.setPassword(password);
+        if (! password.equals(repeatpassword)) {
 
-        modelUser.signUp(new SaveListener<ModelUser>() {
-            @Override
-            public void done(ModelUser modelUser, BmobException e) {
-                if (e == null) {
-                    Toast.makeText(SignupActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(SignupActivity.this, "注册失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignupActivity.this, password, Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignupActivity.this, repeatpassword, Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignupActivity.this, "两次密码不匹配", Toast.LENGTH_SHORT).show();
+        } else {
+            final ModelUser modelUser = new ModelUser();
+            modelUser.setUsername(account);
+            modelUser.setPassword(password);
+
+            modelUser.signUp(new SaveListener<ModelUser>() {
+                @Override
+                public void done(ModelUser modelUser, BmobException e) {
+                    if (e == null) {
+                        Toast.makeText(SignupActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+
+                        modelUser.login(new SaveListener<ModelUser>() {
+                            @Override
+                            public void done(ModelUser modelUser, BmobException e) {
+                                Toast.makeText(SignupActivity.this, "登录中", Toast.LENGTH_SHORT).show();
+
+                                Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+                    } else {
+                        Toast.makeText(SignupActivity.this, "注册失败", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
+            });
 
-        });
+        }
+
     }
 
 }

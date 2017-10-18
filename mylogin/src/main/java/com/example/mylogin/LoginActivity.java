@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 
@@ -63,7 +64,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.custom_signin_button:
-
+                signin();
                 break;
             case R.id.custom_signup_button:
                 Intent intent = new Intent(this, SignupActivity.class);
@@ -75,9 +76,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void signin() {
         String account = accountEdit.getText().toString();
         String password = passwordEdit.getText().toString();
-        ModelUser modelUser = new ModelUser();
+
+        final ModelUser modelUser = new ModelUser();
         modelUser.setUsername(account);
         modelUser.setPassword(password);
+        modelUser.login(new SaveListener<ModelUser>() {
+
+            @Override
+            public void done(ModelUser modelUser, BmobException e) {
+                if(e==null){
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    //通过BmobUser user = BmobUser.getCurrentUser()获取登录成功后的本地用户信息
+                    //如果是自定义用户对象MyUser，可通过MyUser user = BmobUser.getCurrentUser(MyUser.class)获取自定义用户信息
+                }else{
+                    Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
     }
 
 

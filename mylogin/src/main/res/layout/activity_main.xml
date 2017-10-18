@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="com.example.mylogin.MainActivity">
 
+
+
+
     <TextView
-        android:layout_width="368dp"
+        android:id="@+id/user_account_textview"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="hello"
-        android:gravity="center" />
+        />
 
-    <EditText
-        android:layout_width="0dp"
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="你好啊" />
+        android:text="主界面"/>
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/logout_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/logout_text"
+        />
+
+</LinearLayout>

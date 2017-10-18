@@ -84,6 +84,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <!--<View-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="1dp"-->
+                    <!--android:background="@color/black" />-->
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -91,10 +96,6 @@
                     android:gravity="center"
                     android:text="社交账号直接登录" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/black" />
 
                 <Button
                     android:id="@+id/facebook_login_button"
@@ -120,7 +121,7 @@
                     android:textColor="@color/white"
                     android:text="@string/sign_in_google" />
 
-                
+
             </LinearLayout>
 
         </LinearLayout>
